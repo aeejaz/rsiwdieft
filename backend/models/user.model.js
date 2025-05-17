@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        select: false, // for no auto fill
+        select: false, // for no auto fill and it will not be able run and find method
     },
     socketId: {
         type: String,
