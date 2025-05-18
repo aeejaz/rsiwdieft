@@ -27,11 +27,11 @@ module.exports.registerUser = async (req, res, next) => {
         email,
         password: hashedPassword
     });
-
+    //  if we keep on create token in database it will be fill it So we can use Time to live(TTL) for token 
+    // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
     const token = user.generateAuthToken();
 
     res.status(201).json({ token, user });
-
 
 }
 
@@ -63,11 +63,11 @@ module.exports.loginUser = async (req, res, next) => {
     res.status(200).json({ token, user });
 }
 
-// module.exports.getUserProfile = async (req, res, next) => {
+module.exports.getUserProfile = async (req, res, next) => {
 
-//     res.status(200).json(req.user);
+    res.status(200).json(req.user);
 
-// }
+}
 
 // module.exports.logoutUser = async (req, res, next) => {
 //     res.clearCookie('token');
