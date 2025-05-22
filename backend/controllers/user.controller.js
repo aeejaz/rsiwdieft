@@ -2,7 +2,7 @@
 const userModel = require('../models/user.model');
 const userService = require('../services/user.service');
 const { validationResult } = require('express-validator');
-// const blackListTokenModel = require('../models/blackListToken.model');
+const blackListTokenModel = require('../models/blacklistToken.model');
 
 module.exports.registerUser = async (req, res, next) => {
 
@@ -28,7 +28,7 @@ module.exports.registerUser = async (req, res, next) => {
         password: hashedPassword
     });
     //  if we keep on create token in database it will be fill it So we can use Time to live(TTL) for token 
-    // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); this is from user.model.js
     const token = user.generateAuthToken();
 
     res.status(201).json({ token, user });
@@ -69,12 +69,12 @@ module.exports.getUserProfile = async (req, res, next) => {
 
 }
 
-// module.exports.logoutUser = async (req, res, next) => {
-//     res.clearCookie('token');
-//     const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+module.exports.logoutUser = async (req, res, next) => {
+    res.clearCookie('token');
+    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
 
-//     await blackListTokenModel.create({ token });
+    await blackListTokenModel.create({ token });
 
-//     res.status(200).json({ message: 'Logged out' });
+    res.status(200).json({ message: 'Logged out via rtGetMDBklMdBklUsConLG+Bkl' });
 
-// }
+}

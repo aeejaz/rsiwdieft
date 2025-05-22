@@ -1,6 +1,6 @@
 const userModel = require('../models/user.model');
 
-// db to connect _- models for TABLEcontrollers for logic _- routes for validation _- 
+// db to connect _- models for TABLE_ controllers for logic _- routes for validation _- 
 // services for adding users
 module.exports.createUser = async ({
     firstname, lastname, email, password
