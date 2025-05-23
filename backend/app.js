@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('Hello everything looks perfect in getting  response and starting the server');
 });
 
 app.use('/users', userRoutes);
