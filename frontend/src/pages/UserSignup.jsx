@@ -1,111 +1,153 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import lightninglogo from '../assets/lightninglogo.svg'
-import swiftrideblack from '../assets/swiftrideblack.svg'
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import lightninglogo from "../assets/lightninglogo.svg";
+import swiftrideblack from "../assets/swiftrideblack.svg";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
 
 const UserSignup = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [userData, setUserData] = useState({})
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [userData, setUserData] = useState({});
 
+    const navigate = useNavigate()
 
-  const submitHandler = (e)=>{
-    e.preventDefault()
-    setUserData({
-      fullName:{
-        firstName:firstName,
-        lastName:lastName
+  const { user, setUser } = useContext(UserDataContext)
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+const newUser = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName
       },
-      email:email,
-      password:password
-    })
+            email: email,
+            password: password,
+        };
 
-    setEmail('')
-    setFirstName('')
-    setLastName('')
-    setPassword('')
+         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
 
-  }
-  return (
-    <div>
-      <div className='p-7 h-screen flex flex-col justify-between'>
+    if (response.status === 201) {
+      const data = response.data
+      setUser(data.user)
+      localStorage.setItem('token', data.token)
+      navigate('/home')
+    }
+
+        // clear the form fields once the data is  submitted
+        setEmail("");
+        setFirstName("");
+        setLastName("");
+        setPassword("");
+    };
+    return (
         <div>
-            <div className='w-50 -ml-3 flex items-center'  >
-                 <Link to='/' className='flex items-center'>
-                                  <img src={lightninglogo} alt='logo' className=' w-10 object-contain' href='/' />
-                 
-                                   <img src={swiftrideblack} alt='swift Ride ' className=' pr-5 w-34 fill-current  text-black  object-contain' />
-                          </Link>
-                  </div>
+            <div className="p-7 h-screen flex flex-col justify-between">
+                <div>
+                    <div className="w-50 -ml-3 flex items-center">
+                        <Link to="/" className="flex items-center">
+                            <img
+                                src={lightninglogo}
+                                alt="logo"
+                                className=" w-10 object-contain"
+                                href="/"
+                            />
 
-          <form onSubmit={(e) => {
-            submitHandler(e)
-          }}>
+                            <img
+                                src={swiftrideblack}
+                                alt="swift Ride "
+                                className=" pr-5 w-34 fill-current  text-black  object-contain"
+                            />
+                        </Link>
+                    </div>
 
-            <h3 className='text-lg w-1/2  font-medium mb-2'>What's your name</h3>
-            <div className='flex gap-4 mb-7'>
-              <input
-                required
-                className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
-                type="text"
-                placeholder='First name'
-                value={firstName}
-                onChange={(e)=>{
-                  setFirstName(e.target.value)
-                }}
-              />
-              <input
-                required
-                className='bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
-                type="text"
-                placeholder='Last name'
-                value={lastName}
-                onChange={(e)=>{
-                  setLastName(e.target.value)
-                }}
-              />
+                    <form
+                        onSubmit={(e) => {
+                            submitHandler(e);
+                        }}
+                    >
+                        <h3 className="text-lg w-1/2  font-medium mb-2">
+                            What's your name
+                        </h3>
+                        <div className="flex gap-4 mb-7">
+                            <input
+                                required
+                                className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
+                                type="text"
+                                placeholder="First name"
+                                value={firstName}
+                                onChange={(e) => {
+                                    setFirstName(e.target.value);
+                                }}
+                            />
+                            <input
+                                required
+                                className="bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
+                                type="text"
+                                placeholder="Last name"
+                                value={lastName}
+                                onChange={(e) => {
+                                    setLastName(e.target.value);
+                                }}
+                            />
+                        </div>
+
+                        <h3 className="text-lg font-medium mb-2">
+                            What's your email
+                        </h3>
+                        <input
+                            required
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
+                            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
+                            type="email"
+                            placeholder="email@example.com"
+                        />
+
+                        <h3 className="text-lg font-medium mb-2">
+                            Enter Password
+                        </h3>
+
+                        <input
+                            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
+                            required
+                            type="password"
+                            placeholder="password"
+                        />
+
+                        <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
+                            Create Account
+                        </button>
+                    </form>
+                    <p className="text-center">
+                        Already have a account?{" "}
+                        <Link to="/login" className="text-blue-600">
+                            Login here
+                        </Link>
+                    </p>
+                </div>
+                <div>
+                    <p className="text-[10px] leading-tight">
+                        This site is protected by reCAPTCHA and the{" "}
+                        <span className="underline">Google Privacy Policy</span>{" "}
+                        and{" "}
+                        <span className="underline">
+                            Terms of Service apply
+                        </span>
+                        .
+                    </p>
+                </div>
             </div>
-
-            <h3 className='text-lg font-medium mb-2'>What's your email</h3>
-            <input
-              required
-              value={email}
-              onChange={(e)=>{
-                setEmail(e.target.value)
-              }}
-              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-              type="email"
-              placeholder='email@example.com'
-            />
-
-            <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
-
-            <input
-              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-              value={password}
-              onChange={(e)=>{
-                setPassword(e.target.value)
-              }}
-              required type="password"
-              placeholder='password'
-            />
-
-            <button
-              className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-            >Login</button>
-
-          </form>
-          <p className='text-center'>Already have a account? <Link to='/login' className='text-blue-600'>Login here</Link></p>
         </div>
-        <div>
-          <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
-Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
-        </div>
-      </div>
-    </div>
-  )
-}
+    );
+};
 
-export default UserSignup
+export default UserSignup;
