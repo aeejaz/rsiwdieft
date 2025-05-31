@@ -8,12 +8,11 @@ const WaitingForDriver = (props) => {
       }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
 
       <div className='flex items-center justify-between'>
-        <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
+        <img className='h-12' src={vehicleX} alt="swift premium car" />
         <div className='text-right'>
-          <h2 className='text-lg font-medium'>Aeejaz</h2>
-          <h4 className='text-xl font-semibold -mt-1 -mb-1'>Us04 AB 1234</h4>
-          <p className='text-sm text-gray-600'>Toyoto Suzuki Alto</p>
-
+            <h2 className='text-lg font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
+          <h4 className='text-xl font-semibold -mt-1 -mb-1'>{props.ride?.captain.vehicle.plate}</h4>
+          <h1 className='text-lg font-semibold'>  {props.ride?.otp} </h1>
         </div>
       </div>
 
@@ -23,21 +22,21 @@ const WaitingForDriver = (props) => {
             <i className="ri-map-pin-user-fill"></i>
             <div>
               <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>Kankariya Talab, Bhopal</p>
+              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.pickup}</p>
             </div>
           </div>
           <div className='flex items-center gap-5 p-3 border-b-2'>
             <i className="text-lg ri-map-pin-2-fill"></i>
             <div>
               <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>Kankariya Talab, Bhopal</p>
+              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.destination}</p>
             </div>
           </div>
           <div className='flex items-center gap-5 p-3'>
             <i className="ri-currency-line"></i>
             <div>
-              <h3 className='text-lg font-medium'>$193.20 </h3>
-              <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
+              <h3 className='text-lg font-medium'>₹{props.ride?.fare} </h3>
+              <p className='text-sm -mt-1 text-gray-600'>Cash </p>
             </div>
           </div>
         </div>
